@@ -114,6 +114,7 @@ import org.webrtc.CameraVideoCapturer;
 import org.webrtc.DefaultVideoDecoderFactory;
 import org.webrtc.DefaultVideoEncoderFactory;
 import org.webrtc.EglBase;
+import org.webrtc.ExtCamera2Enumerator;
 import org.webrtc.IceCandidate;
 import org.webrtc.Logging;
 import org.webrtc.MediaConstraints;
@@ -236,6 +237,9 @@ public class CallActivity extends CallBaseActivity {
     private Handler callControlHandler = new Handler();
     private Handler callInfosHandler = new Handler();
     private Handler cameraSwitchHandler = new Handler();
+
+    private boolean disableEIS = true;
+    private boolean zoomOut = true;
 
     // push to talk
     private boolean isPTTActive = false;
@@ -391,7 +395,9 @@ public class CallActivity extends CallBaseActivity {
             Log.w(TAG, "Camera2Enumerator threw an error", t);
         }
 
-        if (camera2EnumeratorIsSupported) {
+        if (camera2EnumeratorIsSupported & (disableEIS || zoomOut)) {
+            cameraEnumerator = new ExtCamera2Enumerator(this, disableEIS, zoomOut);
+        } else if (camera2EnumeratorIsSupported) {
             cameraEnumerator = new Camera2Enumerator(this);
         } else {
             cameraEnumerator = new Camera1Enumerator(MagicWebRTCUtils.shouldEnableVideoHardwareAcceleration());
@@ -828,7 +834,6 @@ public class CallActivity extends CallBaseActivity {
                 }
             }
         }
-
 
         // Front facing camera not found, try something else
         Logging.d(TAG, "Looking for other cameras.");
@@ -1742,7 +1747,7 @@ public class CallActivity extends CallBaseActivity {
 
     private void startVideoCapture() {
         if (videoCapturer != null) {
-            videoCapturer.startCapture(1280, 720, 30);
+            videoCapturer.startCapture(1280, 960, 30);
         }
     }
 
