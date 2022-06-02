@@ -1,5 +1,4 @@
 /*
- *
  *   Nextcloud Talk application
  *
  *   @author Mario Danic
