@@ -105,6 +105,7 @@ import com.nextcloud.talk.activities.CallActivity
 import com.nextcloud.talk.activities.MainActivity
 import com.nextcloud.talk.activities.TakePhotoActivity
 import com.nextcloud.talk.adapters.messages.IncomingLocationMessageViewHolder
+import com.nextcloud.talk.adapters.messages.IncomingPollMessageViewHolder
 import com.nextcloud.talk.adapters.messages.IncomingPreviewMessageViewHolder
 import com.nextcloud.talk.adapters.messages.IncomingVoiceMessageViewHolder
 import com.nextcloud.talk.adapters.messages.MagicIncomingTextMessageViewHolder
@@ -112,6 +113,7 @@ import com.nextcloud.talk.adapters.messages.MagicOutcomingTextMessageViewHolder
 import com.nextcloud.talk.adapters.messages.MagicSystemMessageViewHolder
 import com.nextcloud.talk.adapters.messages.MagicUnreadNoticeMessageViewHolder
 import com.nextcloud.talk.adapters.messages.OutcomingLocationMessageViewHolder
+import com.nextcloud.talk.adapters.messages.OutcomingPollMessageViewHolder
 import com.nextcloud.talk.adapters.messages.OutcomingPreviewMessageViewHolder
 import com.nextcloud.talk.adapters.messages.OutcomingVoiceMessageViewHolder
 import com.nextcloud.talk.adapters.messages.PreviewMessageInterface
@@ -542,6 +544,17 @@ class ChatController(args: Bundle) :
                 OutcomingVoiceMessageViewHolder::class.java,
                 null,
                 R.layout.item_custom_outcoming_voice_message,
+                this
+            )
+
+            messageHolders.registerContentType(
+                CONTENT_TYPE_POLL,
+                IncomingPollMessageViewHolder::class.java,
+                profileBottomSheet,
+                R.layout.item_custom_incoming_poll_message,
+                OutcomingPollMessageViewHolder::class.java,
+                null,
+                R.layout.item_custom_outcoming_poll_message,
                 this
             )
 
@@ -3014,6 +3027,7 @@ class ChatController(args: Bundle) :
         return when (type) {
             CONTENT_TYPE_LOCATION -> message.hasGeoLocation()
             CONTENT_TYPE_VOICE_MESSAGE -> message.isVoiceMessage
+            CONTENT_TYPE_POLL -> message.isPoll()
             CONTENT_TYPE_SYSTEM_MESSAGE -> !TextUtils.isEmpty(message.systemMessage)
             CONTENT_TYPE_UNREAD_NOTICE_MESSAGE -> message.id == "-1"
             else -> false
@@ -3129,6 +3143,7 @@ class ChatController(args: Bundle) :
         private const val CONTENT_TYPE_UNREAD_NOTICE_MESSAGE: Byte = 2
         private const val CONTENT_TYPE_LOCATION: Byte = 3
         private const val CONTENT_TYPE_VOICE_MESSAGE: Byte = 4
+        private const val CONTENT_TYPE_POLL: Byte = 5
         private const val NEW_MESSAGES_POPUP_BUBBLE_DELAY: Long = 200
         private const val POP_CURRENT_CONTROLLER_DELAY: Long = 100
         private const val LOBBY_TIMER_DELAY: Long = 5000
