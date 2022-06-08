@@ -112,6 +112,7 @@ import com.nextcloud.talk.adapters.messages.MagicIncomingTextMessageViewHolder
 import com.nextcloud.talk.adapters.messages.MagicOutcomingTextMessageViewHolder
 import com.nextcloud.talk.adapters.messages.MagicSystemMessageViewHolder
 import com.nextcloud.talk.adapters.messages.MagicUnreadNoticeMessageViewHolder
+import com.nextcloud.talk.adapters.messages.MessagePayload
 import com.nextcloud.talk.adapters.messages.OutcomingLocationMessageViewHolder
 import com.nextcloud.talk.adapters.messages.OutcomingPollMessageViewHolder
 import com.nextcloud.talk.adapters.messages.OutcomingPreviewMessageViewHolder
@@ -486,10 +487,12 @@ class ChatController(args: Bundle) :
             val messageHolders = MessageHolders()
             val profileBottomSheet = ProfileBottomSheet(ncApi!!, conversationUser!!, router)
 
+            val payload = MessagePayload(roomToken!!, profileBottomSheet)
+
             messageHolders.setIncomingTextConfig(
                 MagicIncomingTextMessageViewHolder::class.java,
                 R.layout.item_custom_incoming_text_message,
-                profileBottomSheet
+                payload
             )
             messageHolders.setOutcomingTextConfig(
                 MagicOutcomingTextMessageViewHolder::class.java,
@@ -499,7 +502,7 @@ class ChatController(args: Bundle) :
             messageHolders.setIncomingImageConfig(
                 IncomingPreviewMessageViewHolder::class.java,
                 R.layout.item_custom_incoming_preview_message,
-                profileBottomSheet
+                payload
             )
 
             messageHolders.setOutcomingImageConfig(
@@ -528,7 +531,7 @@ class ChatController(args: Bundle) :
             messageHolders.registerContentType(
                 CONTENT_TYPE_LOCATION,
                 IncomingLocationMessageViewHolder::class.java,
-                profileBottomSheet,
+                payload,
                 R.layout.item_custom_incoming_location_message,
                 OutcomingLocationMessageViewHolder::class.java,
                 null,
@@ -539,7 +542,7 @@ class ChatController(args: Bundle) :
             messageHolders.registerContentType(
                 CONTENT_TYPE_VOICE_MESSAGE,
                 IncomingVoiceMessageViewHolder::class.java,
-                profileBottomSheet,
+                payload,
                 R.layout.item_custom_incoming_voice_message,
                 OutcomingVoiceMessageViewHolder::class.java,
                 null,
@@ -550,10 +553,10 @@ class ChatController(args: Bundle) :
             messageHolders.registerContentType(
                 CONTENT_TYPE_POLL,
                 IncomingPollMessageViewHolder::class.java,
-                profileBottomSheet,
+                payload,
                 R.layout.item_custom_incoming_poll_message,
                 OutcomingPollMessageViewHolder::class.java,
-                null,
+                payload,
                 R.layout.item_custom_outcoming_poll_message,
                 this
             )
