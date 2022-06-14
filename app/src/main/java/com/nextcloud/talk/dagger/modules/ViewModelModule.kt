@@ -24,6 +24,7 @@ package com.nextcloud.talk.dagger.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nextcloud.talk.messagesearch.MessageSearchViewModel
+import com.nextcloud.talk.polls.viewmodels.PollResultsViewModel
 import com.nextcloud.talk.polls.viewmodels.PollViewModel
 import com.nextcloud.talk.polls.viewmodels.PollVoteViewModel
 import com.nextcloud.talk.shareditems.viewmodels.SharedItemsViewModel
@@ -71,4 +72,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PollVoteViewModel::class)
     abstract fun pollVoteViewModel(viewModel: PollVoteViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PollResultsViewModel::class)
+    abstract fun pollResultsViewModel(viewModel: PollResultsViewModel): ViewModel
 }
