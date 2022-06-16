@@ -75,6 +75,11 @@ class AttachmentDialog(val activity: Activity, var chatController: ChatControlle
             dismiss()
         }
 
+        dialogAttachmentBinding.menuAttachPoll.setOnClickListener {
+            chatController.createPoll()
+            dismiss()
+        }
+
         dialogAttachmentBinding.menuAttachFileFromCloud.setOnClickListener {
             chatController.showBrowserScreen(BrowserController.BrowserType.DAV_BROWSER)
             dismiss()
